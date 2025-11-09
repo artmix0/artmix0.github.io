@@ -1,9 +1,9 @@
-name: Scrapuj stronę
+name: Scrapuj stronę z JS
 
 on:
   schedule:
-    - cron: "0 6 * * *"  # uruchamia codziennie o 6:00 rano
-  workflow_dispatch:      # można też ręcznie odpalić z GitHuba
+    - cron: "0 6 * * *"  # codziennie o 6:00 rano
+  workflow_dispatch:      # możliwość ręcznego uruchomienia
 
 permissions:
   contents: write
@@ -20,30 +20,36 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Zainstaluj axios i cheerio
-        run: npm install axios cheerio
+      - name: Zainstaluj Puppeteer
+        run: npm install puppeteer
 
       - name: Scrapuj stronę
         run: |
           node <<'EOF'
-          import axios from "axios";
-          import * as cheerio from "cheerio";
+          import puppeteer from "puppeteer";
           import fs from "fs";
 
           const url = "https://www.zsk.poznan.pl/plany_lekcji/2025";
-          const run = async () => {
-            const { data } = await axios.get(url);
-            const $ = cheerio.load(data);
 
-            const przedmioty = [];
-            $(".p").each((i, el) => {
-              const tytul = $(el).text().trim();
-              przedmioty.push(tytul);
+          const run = async () => {
+            const browser = await puppeteer.launch({
+              args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+            const page = await browser.newPage();
+            await page.goto(url, { waitUntil: 'networkidle0' }); // czeka aż JS się załaduje
+
+            // Pobieramy treść po wykonaniu JS
+            const przedmioty = await page.evaluate(() => {
+              const elements = document.querySelectorAll(".p"); // lub inny selector
+              return Array.from(elements).map(el => el.textContent.trim());
             });
 
-            fs.writeFileSync("scraped.json", JSON.stringify($.html(), null, 2));
+            fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
             console.log("Zapisano scraped.json");
+
+            await browser.close();
           };
+
           run();
           EOF
 
