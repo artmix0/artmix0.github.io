@@ -60,7 +60,7 @@ jobs:
 
               await page.waitForSelector('body');
 
-              allPlans[text_link] = await page.evaluate(() => document.body);
+              allPlans[text_link] = await page.evaluate(() => document.body.iinnerHTML);
             }
 
             fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
