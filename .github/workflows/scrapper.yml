@@ -47,10 +47,18 @@ jobs:
             const allPlans = {};
 
             for (const link of links) {
-              console.log("Przetwarzam:", link.text.substring(0, 2));
+              if (/^[0-9][A-Za-z]/.test(link.text)){
+                text_link = link.text.substring(0, 2);
+              }
+              else{
+                text_link = link.text;
+              }
+              
+              console.log("Przetwarzam:", text_link);
+
               await page.goto(url+"/"+link.href, { waitUntil: 'networkidle0' });
 
-              allPlans[link.text.substring(0, 2)] = page.evaluate(()=>{
+              allPlans[text_link] = page.evaluate(()=>{
                 return document.body.innerText;
               })
             }
