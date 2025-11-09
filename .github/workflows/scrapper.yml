@@ -50,7 +50,7 @@ jobs:
             // Przechodzimy po każdym linku
             for (const link of links) {
               console.log("Przetwarzam:", link.text);
-              await page.goto(link.href, { waitUntil: 'networkidle0' });
+              await page.goto(url+"/"+link.href, { waitUntil: 'networkidle0' });
 
               // Poczekaj na wyrenderowanie ramki planu
               await new Promise(r => setTimeout(r, 3000)); // 3s, można zwiększyć jeśli potrzebne
