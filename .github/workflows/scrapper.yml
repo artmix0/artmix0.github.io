@@ -56,6 +56,8 @@ jobs:
 
               console.log("Przetwarzam:", text_link);
 
+              console.log("Odwiedzanie:", url + "/" + link.href);
+
               await page.goto(url + "/" + link.href, { waitUntil: 'networkidle0' });
 
               await page.waitForSelector('body');
