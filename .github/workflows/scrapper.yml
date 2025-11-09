@@ -37,22 +37,38 @@ jobs:
             });
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle0' });
-      
-            // pobierz wszystkie ramki
-            const frames = page.frames();
-            const planFrame = frames.find(f => f.name() === 'plan');
-      
-            // poczekaj aż ramka się w pełni wyrenderuje
-            await new Promise(resolve => setTimeout(resolve, 5000)); 
-      
-            // wyciągnij HTML planu
-            const planHTML = await planFrame.evaluate(() => document.body.innerHTML);
-      
-            // zapisz do pliku JSON (lub HTML jeśli wolisz)
-            fs.writeFileSync('scraped.json', JSON.stringify({ html: planHTML }, null, 2));
-      
+
+            // Pobierz wszystkie linki z menu (Odnośniki do klas i nauczycieli)
+            const links = await page.evaluate(() => {
+              return Array.from(document.querySelectorAll("#menu a")) // zmień selektor "#menu a" na faktyczny
+                .map(a => ({ text: a.textContent.trim(), href: a.href }));
+            });
+
+            const allPlans = {};
+
+            // Przechodzimy po każdym linku
+            for (const link of links) {
+              console.log("Przetwarzam:", link.text);
+              await page.goto(link.href, { waitUntil: 'networkidle0' });
+
+              // Poczekaj na wyrenderowanie ramki planu
+              await new Promise(r => setTimeout(r, 3000)); // 3s, można zwiększyć jeśli potrzebne
+
+              const planFrame = page.frames().find(f => f.name() === 'plan');
+
+              if (planFrame) {
+                const planHTML = await planFrame.evaluate(() => document.body.innerHTML);
+                allPlans[link.text] = planHTML;
+              } else {
+                allPlans[link.text] = null;
+                console.log("Nie znaleziono ramki planu dla", link.text);
+              }
+            }
+
+            fs.writeFileSync("allPlans.json", JSON.stringify(allPlans, null, 2));
+            console.log("Zapisano wszystkie plany w allPlans.json");
+
             await browser.close();
-            console.log("Zapisano scraped.json");
           };
       
           run();
