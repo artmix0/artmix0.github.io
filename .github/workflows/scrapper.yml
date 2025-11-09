@@ -52,18 +52,9 @@ jobs:
               console.log("Przetwarzam:", link.text);
               await page.goto(url+"/"+link.href, { waitUntil: 'networkidle0' });
 
-              // Poczekaj na wyrenderowanie ramki planu
-              await new Promise(r => setTimeout(r, 3000)); // 3s, można zwiększyć jeśli potrzebne
-
-              const planFrame = page.frames().find(f => f.name() === 'plan');
-
-              if (planFrame) {
-                const planHTML = await planFrame.evaluate(() => document.body.innerHTML);
-                allPlans[link.text] = planHTML;
-              } else {
-                allPlans[link.text] = null;
-                console.log("Nie znaleziono ramki planu dla", link.text);
-              }
+              allPlans[link.text] = page.evaluate(()=>{
+                return document.body.innerText;
+              })
             }
 
             fs.writeFileSync("allPlans.json", JSON.stringify(allPlans, null, 2));
