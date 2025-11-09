@@ -47,8 +47,9 @@ jobs:
             const allPlans = {};
 
             for (const link of links) {
+              let text_link = "";
               if (/^[0-9][A-Za-z]/.test(link.text)){
-                text_link = link.text.substring(0, 2);
+                 text_link = link.text.substring(0, 2);
               }
               else{
                 text_link = link.text;
