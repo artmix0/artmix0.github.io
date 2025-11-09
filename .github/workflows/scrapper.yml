@@ -38,7 +38,6 @@ jobs:
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle0' });
 
-            // Pobierz wszystkie linki z menu (Odnośniki do klas i nauczycieli)
             const listFrame = page.frames().find(f => f.name() === 'list');
             const links = await listFrame.evaluate(() => {
               return Array.from(document.querySelectorAll(".el")) // 
@@ -47,18 +46,17 @@ jobs:
 
             const allPlans = {};
 
-            // Przechodzimy po każdym linku
             for (const link of links) {
-              console.log("Przetwarzam:", link.text);
+              console.log("Przetwarzam:", link.text.substring(0, 2));
               await page.goto(url+"/"+link.href, { waitUntil: 'networkidle0' });
 
-              allPlans[link.text] = page.evaluate(()=>{
+              allPlans[link.text.substring(0, 2)] = page.evaluate(()=>{
                 return document.body.innerText;
               })
             }
 
-            fs.writeFileSync("allPlans.json", JSON.stringify(allPlans, null, 2));
-            console.log("Zapisano wszystkie plany w allPlans.json");
+            fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
+            console.log("Zapisano wszystkie plany w scraped.json");
 
             await browser.close();
           };
