@@ -39,7 +39,8 @@ jobs:
             await page.goto(url, { waitUntil: 'networkidle0' });
 
             // Pobierz wszystkie linki z menu (Odnośniki do klas i nauczycieli)
-            const links = await page.evaluate(() => {
+            const listFrame = page.frames().find(f => f.name() === 'list');
+            const links = await listFrame.evaluate(() => {
               return Array.from(document.querySelectorAll(".el")) // 
                 .map(a => ({ text: a.textContent.trim(), href: a.href }));
             });
