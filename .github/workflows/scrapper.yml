@@ -5,6 +5,9 @@ on:
     - cron: "0 6 * * *"  # uruchamia codziennie o 6:00 rano
   workflow_dispatch:      # można też ręcznie odpalić z GitHuba
 
+permissions:
+  contents: write
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
