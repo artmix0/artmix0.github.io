@@ -37,6 +37,7 @@ jobs:
             });
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle0' });
+            await page.waitForSelector(".tabela");
 
             const przedmioty = await page.evaluate(() => {
               return document.body.innerHTML;
