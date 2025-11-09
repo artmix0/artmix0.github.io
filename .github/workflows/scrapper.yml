@@ -30,7 +30,7 @@ jobs:
           import * as cheerio from "cheerio";
           import fs from "fs";
 
-          const url = "https://www.zsk.poznan.pl/plany_lekcji/2025"; // ← zmień na stronę, którą chcesz scrapować
+          const url = "https://www.zsk.poznan.pl/plany_lekcji/2025";
           const run = async () => {
             const { data } = await axios.get(url);
             const $ = cheerio.load(data);
@@ -41,7 +41,7 @@ jobs:
               przedmioty.push(tytul);
             });
 
-            fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
+            fs.writeFileSync("scraped.json", JSON.stringify($.html(), null, 2));
             console.log("Zapisano scraped.json");
           };
           run();
