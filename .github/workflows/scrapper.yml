@@ -56,15 +56,11 @@ jobs:
 
               console.log("Przetwarzam:", text_link);
 
-              console.log(link.href);
-
               await page.goto(link.href, { waitUntil: 'networkidle0' });
 
               await page.waitForSelector('body');
 
               allPlans[text_link] = await page.evaluate(() => document.body.innerText);
-
-              break;
             }
 
             fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
