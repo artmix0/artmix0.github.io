@@ -1,0 +1,51 @@
+name: Scrapuj stronę
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # uruchamia codziennie o 6:00 rano
+  workflow_dispatch:      # można też ręcznie odpalić z GitHuba
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Użyj Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Zainstaluj axios i cheerio
+        run: npm install axios cheerio
+
+      - name: Scrapuj stronę
+        run: |
+          node <<'EOF'
+          import axios from "axios";
+          import * as cheerio from "cheerio";
+          import fs from "fs";
+
+          const url = "https://www.zsk.poznan.pl/plany_lekcji/2025"; // ← zmień na stronę, którą chcesz scrapować
+          const run = async () => {
+            const { data } = await axios.get(url);
+            const $ = cheerio.load(data);
+
+            // przykład: zbieranie wszystkich tytułów H2
+            const tytuly = [];
+            $("span").each((i, el) => tytuly.push($(el).text().trim()));
+
+            fs.writeFileSync("scraped.json", JSON.stringify(tytuly, null, 2));
+            console.log("Zapisano scraped.json");
+          };
+          run();
+          EOF
+
+      - name: Commit i push zmian
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scraped.json
+          git commit -m "Automatyczna aktualizacja danych" || echo "Brak zmian"
+          git push
