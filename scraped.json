@@ -1,1 +1,1 @@
-[]
+"\n<frame name=\"list\" target=\"plan\" src=\"lista.html\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"auto\">\n<frame name=\"plan\" src=\"plany/o3.html\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"auto\">\n<noframes>\n<body>\n<p>Ta strona używa ramek, których Twoja przeglądarka nie obsługuje!\n Możesz skorzystać ze <a href=\"lista.html\">strony nawigacyjnej</a>.</p>\n</body>\n</noframes>\n"
