@@ -15,6 +15,7 @@
         .then(data => {
             const lista = document.getElementById("lista");
             data.forEach(el => {
+                console.log("Dodawanie elementu:", el);
             const li = document.createElement("li");
             li.textContent = el;
             lista.appendChild(li);

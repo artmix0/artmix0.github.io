@@ -36,15 +36,13 @@ jobs:
               args: ['--no-sandbox', '--disable-setuid-sandbox']
             });
             const page = await browser.newPage();
-            await page.goto(url, { waitUntil: 'networkidle0' }); // czeka aż JS się załaduje
+            await page.goto(url, { waitUntil: 'networkidle0' });
 
-            // Pobieramy treść po wykonaniu JS
             const przedmioty = await page.evaluate(() => {
-              const elements = document.querySelectorAll(".p"); // lub inny selector
-              return Array.from(elements).map(el => el.textContent.trim());
+              const elements = Array.from(document.querySelectorAll(".p")).map(el => el.textContent.trim());
             });
 
-            fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
+            fs.writeFileSync("scraped.json", JSON.stringify(elements, null, 2));
             console.log("Zapisano scraped.json");
 
             await browser.close();
