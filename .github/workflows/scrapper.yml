@@ -40,7 +40,7 @@ jobs:
 
             // Pobierz wszystkie linki z menu (Odnośniki do klas i nauczycieli)
             const links = await page.evaluate(() => {
-              return Array.from(document.querySelectorAll("#menu a")) // zmień selektor "#menu a" na faktyczny
+              return Array.from(document.querySelectorAll(".el")) // 
                 .map(a => ({ text: a.textContent.trim(), href: a.href }));
             });
 
