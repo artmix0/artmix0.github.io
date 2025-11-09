@@ -1,4 +1,4 @@
-name: Scrapuj stronę z JS
+name: Scrapuj stronę
 
 on:
   schedule:
@@ -48,20 +48,21 @@ jobs:
 
             for (const link of links) {
               let text_link = "";
-              if (/^[0-9][A-Za-z]/.test(link.text)){
-                 text_link = link.text.substring(0, 2);
-              }
-              else{
+              if (/^[0-9][A-Za-z]/.test(link.text)) {
+                text_link = link.text.substring(0, 2);
+              } else {
                 text_link = link.text;
               }
-              
+
               console.log("Przetwarzam:", text_link);
 
-              await page.goto(url+"/"+link.href, { waitUntil: 'networkidle0' });
+              await page.goto(url + "/" + link.href, { waitUntil: 'networkidle0' });
 
-              allPlans[text_link] = page.evaluate(()=>{
-                return document.body.innerText;
-              })
+              await page.waitForSelector('body');
+
+              allPlans[text_link] = await page.evaluate(() => document.body.innerText);
+
+              break;
             }
 
             fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
