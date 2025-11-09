@@ -3,6 +3,7 @@ fetch("scraped.json")
   .then(res => res.json())
   .then(data => {
     // Pomijamy wszystko po "\tBukowska" (stopka)
+    console.log(data);
     const cleanedString = data.split('\tBukowska')[0];
 
     // Dzielimy po wierszach
