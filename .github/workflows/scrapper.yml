@@ -40,9 +40,9 @@ jobs:
 
             const przedmioty = await page.evaluate(() => {
               const elements = Array.from(document.querySelectorAll(".p")).map(el => el.textContent.trim());
+              fs.writeFileSync("scraped.json", JSON.stringify(elements, null, 2));
             });
 
-            fs.writeFileSync("scraped.json", JSON.stringify(elements, null, 2));
             console.log("Zapisano scraped.json");
 
             await browser.close();
