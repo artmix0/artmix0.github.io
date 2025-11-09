@@ -37,14 +37,16 @@ jobs:
             });
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle0' });
-            await new Promise(resolve => setTimeout(resolve, 5000));
 
-            const przedmioty = await page.evaluate(() => {
-              return document.body.innerHTML;
-            });
-
-            fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
-            console.log("Zapisano scraped.json");
+            // pobierz wszystkie ramki
+            const frames = page.frames();
+            
+            const planFrame = frames.find(f => f.name() === 'plan'); // nazwa z <frame name="plan">
+            
+            const planHTML = await planFrame.evaluate(() => document.body.innerHTML);
+            
+            import fs from 'fs';
+            fs.writeFileSync('plan.html', planHTML);
 
             await browser.close();
           };
