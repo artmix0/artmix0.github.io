@@ -39,8 +39,7 @@ jobs:
             await page.goto(url, { waitUntil: 'networkidle0' });
 
             const przedmioty = await page.evaluate(() => {
-              const elements = Array.from(document.querySelectorAll(".p")).map(el => el.textContent.trim());
-              return elements;
+              return document.body.innerHTML;
             });
 
             fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
