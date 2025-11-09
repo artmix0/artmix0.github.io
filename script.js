@@ -1,3 +1,4 @@
+console.log("Ładowanie danych ze scraped.json...");
 fetch("scraped.json")
   .then(res => res.json())
   .then(data => {
