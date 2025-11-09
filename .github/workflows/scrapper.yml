@@ -28,28 +28,33 @@ jobs:
           node <<'EOF'
           import puppeteer from "puppeteer";
           import fs from "fs";
-
+      
           const url = "https://www.zsk.poznan.pl/plany_lekcji/2025";
-
+      
           const run = async () => {
             const browser = await puppeteer.launch({
               args: ['--no-sandbox', '--disable-setuid-sandbox']
             });
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle0' });
-
+      
             // pobierz wszystkie ramki
             const frames = page.frames();
-            
-            const planFrame = frames.find(f => f.name() === 'plan'); // nazwa z <frame name="plan">
-            
+            const planFrame = frames.find(f => f.name() === 'plan');
+      
+            // poczekaj aż ramka się w pełni wyrenderuje
+            await new Promise(resolve => setTimeout(resolve, 5000)); 
+      
+            // wyciągnij HTML planu
             const planHTML = await planFrame.evaluate(() => document.body.innerHTML);
-            
-            fs.writeFileSync('plan.html', planHTML);
-
+      
+            // zapisz do pliku JSON (lub HTML jeśli wolisz)
+            fs.writeFileSync('scraped.json', JSON.stringify({ html: planHTML }, null, 2));
+      
             await browser.close();
+            console.log("Zapisano scraped.json");
           };
-
+      
           run();
           EOF
 
