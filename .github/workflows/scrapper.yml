@@ -37,7 +37,7 @@ jobs:
             });
             const page = await browser.newPage();
             await page.goto(url, { waitUntil: 'networkidle0' });
-            await page.waitForTimeout(10000); 
+            await new Promise(resolve => setTimeout(resolve, 5000));
 
             const przedmioty = await page.evaluate(() => {
               return document.body.innerHTML;
