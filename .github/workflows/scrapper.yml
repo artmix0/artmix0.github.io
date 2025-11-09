@@ -45,7 +45,6 @@ jobs:
             
             const planHTML = await planFrame.evaluate(() => document.body.innerHTML);
             
-            import fs from 'fs';
             fs.writeFileSync('plan.html', planHTML);
 
             await browser.close();
