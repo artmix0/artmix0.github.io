@@ -40,7 +40,7 @@ jobs:
 
             const listFrame = page.frames().find(f => f.name() === 'list');
             const links = await listFrame.evaluate(() => {
-              return Array.from(document.querySelectorAll(".el")) // 
+              return Array.from(document.querySelectorAll(".el > a")) // 
                 .map(a => ({ text: a.textContent.trim(), href: a.href }));
             });
 
