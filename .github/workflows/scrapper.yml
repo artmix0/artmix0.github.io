@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Zainstaluj Puppeteer
+      - name: Zainstaluj Puppeteer oraz fs
         run: npm install puppeteer fs
 
       - name: Scrapuj stronę
@@ -40,9 +40,10 @@ jobs:
 
             const przedmioty = await page.evaluate(() => {
               const elements = Array.from(document.querySelectorAll(".p")).map(el => el.textContent.trim());
-              fs.writeFileSync("scraped.json", JSON.stringify(elements, null, 2));
+              return elements;
             });
 
+            fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
             console.log("Zapisano scraped.json");
 
             await browser.close();
