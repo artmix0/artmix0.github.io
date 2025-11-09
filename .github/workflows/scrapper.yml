@@ -35,11 +35,13 @@ jobs:
             const { data } = await axios.get(url);
             const $ = cheerio.load(data);
 
-            // przykład: zbieranie wszystkich tytułów H2
-            const tytuly = [];
-            $("span").each((i, el) => tytuly.push($(el).text().trim()));
+            const przedmioty = [];
+            $(".p").each((i, el) => {
+              const tytul = $(el).text().trim();
+              przedmioty.push(tytul);
+            });
 
-            fs.writeFileSync("scraped.json", JSON.stringify(tytuly, null, 2));
+            fs.writeFileSync("scraped.json", JSON.stringify(przedmioty, null, 2));
             console.log("Zapisano scraped.json");
           };
           run();
