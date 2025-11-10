@@ -8,7 +8,8 @@ fetch("scraped.json")
 
     for (const [className, htmlString] of Object.entries(data)) {
       const doc = parser.parseFromString(htmlString, "text/html");
-      const table = doc.querySelector("table");
+      console.log(doc);
+      const table = doc.querySelector("");
 
       if (!table) continue; // pomijamy jeśli brak tabeli
 
