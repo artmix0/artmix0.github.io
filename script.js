@@ -10,8 +10,12 @@ fetch("scraped.json")
       const doc = parser.parseFromString(htmlString, "text/html");
       console.log(doc);
       const table = doc.querySelector("div>table");
-      table.querySelector("tr:nth-of-type(2)").remove();
+      console.log(table);
+      console.log(table.querySelector("tr:nth-of-type(3)"));
       table.querySelector("tr:nth-of-type(3)").remove();
+      console.log(table.querySelector("tr:nth-of-type(2)"));
+      table.querySelector("tr:nth-of-type(2)").remove();
+      console.log(table);
 
       const title = document.createElement("h2");
       title.textContent = `${className}`;
