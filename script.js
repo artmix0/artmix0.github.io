@@ -10,15 +10,13 @@ fetch("scraped.json")
       const doc = parser.parseFromString(htmlString, "text/html");
       console.log(doc);
       const table = doc.querySelector("div>table");
+      table.querySelector("tr:nth-of-type(2)").remove();
+      table.querySelector("tr:nth-of-type(3)").remove();
 
-      if (!table) continue; // pomijamy jeśli brak tabeli
-
-      // Nagłówek klasy
       const title = document.createElement("h2");
-      title.textContent = `Klasa ${className}`;
+      title.textContent = `${className}`;
       container.appendChild(title);
 
-      // Wstawiamy tabelę
       container.appendChild(table);
     }
   })
