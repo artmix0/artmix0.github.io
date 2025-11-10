@@ -1,27 +1,28 @@
-console.log("Ładowanie danych ze scraped.json...");
 fetch("scraped.json")
   .then(res => res.json())
   .then(data => {
-    // Pomijamy wszystko po "\tBukowska" (stopka)
-    const dataString = data["1A"]; 
-    const cleanedString = dataString.split('\tBukowska')[0];
+    const container = document.getElementById("plans");
+    container.innerHTML = "";
 
-    // Dzielimy po wierszach
-    const rows = cleanedString.split('\n');
+    const parser = new DOMParser();
 
-    // Tworzymy HTML tabeli
-    let html = '<table border="1">\n';
+    for (const [className, htmlString] of Object.entries(data)) {
+      const doc = parser.parseFromString(htmlString, "text/html");
+      const table = doc.querySelector("table");
 
-    rows.forEach(row => {
-        html += '  <tr>';
-        // dzielimy po tabulatorach i zamieniamy każdą komórkę na <td>
-        row.split('\t').forEach(cell => {
-            html += `<td>${cell.trim()}</td>`;
-        });
-        html += '</tr>\n';
-    });
+      if (!table) continue; // pomijamy jeśli brak tabeli
 
-    html += '</table>';
-    document.body.innerHTML = html;
+      // Nagłówek klasy
+      const title = document.createElement("h2");
+      title.textContent = `Klasa ${className}`;
+      container.appendChild(title);
+
+      // Wstawiamy tabelę
+      container.appendChild(table);
+    }
   })
-  .catch(err => console.error("Błąd wczytywania danych:", err));
+  .catch(err => {
+    console.error("Błąd wczytywania danych:", err);
+    document.getElementById("plans").textContent =
+      "Nie udało się wczytać scraped.json";
+  });
