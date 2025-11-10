@@ -8,7 +8,7 @@ fetch("scraped.json")
 
     for (const [className, htmlString] of Object.entries(data)) {
       const doc = parser.parseFromString(htmlString, "text/html");
-      const table = doc.querySelector("div > table, table");
+      const table = doc.querySelector("div > table");
 
       const rows = table.querySelectorAll(":scope > tbody > tr");
 
