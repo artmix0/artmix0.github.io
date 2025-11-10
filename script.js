@@ -8,19 +8,16 @@ fetch("scraped.json")
 
     for (const [className, htmlString] of Object.entries(data)) {
       const doc = parser.parseFromString(htmlString, "text/html");
-      console.log(doc);
-      const table = doc.querySelector("div>table");
-      console.log(table);
-      console.log(table.querySelector("tr:nth-of-type(3)"));
-      table.querySelector("tr:nth-of-type(3)").remove();
-      console.log(table.querySelector("tr:nth-of-type(2)"));
-      table.querySelector("tr:nth-of-type(2)").remove();
-      console.log(table);
+      const table = doc.querySelector("div > table, table");
+
+      const rows = table.querySelectorAll(":scope > tbody > tr");
+
+      if (rows[1]) rows[1].remove();
+      if (rows[2]) rows[2].remove();
 
       const title = document.createElement("h2");
-      title.textContent = `${className}`;
+      title.textContent = className;
       container.appendChild(title);
-
       container.appendChild(table);
     }
   })
