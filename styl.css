@@ -121,8 +121,7 @@ tbody tr:hover {
   td, th {
     padding: 4px 6px;
     font-size: 0.9em;
-    white-space: normal;    
-    overflow-wrap: anywhere;    
+    white-space: normal;      
   }
 
   #plans {
