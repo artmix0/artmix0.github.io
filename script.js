@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const parser = new DOMParser();
 
       for (const [name, htmlString] of Object.entries(data)) {
-        let container = document.createElement("div");
+        let container = "";
         
 
         const doc = parser.parseFromString(htmlString, "text/html");
@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const title = document.createElement("h2");
         title.textContent = name;
-        
-        container.appendChild(title);
-        container.appendChild(table);
+
+        container =+ title;
+        container =+ table;
 
         plany[name] = container;
       }
