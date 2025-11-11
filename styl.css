@@ -64,7 +64,7 @@ table {
 
 td, th {
   border: 1px solid #bbb;
-  padding: 8px 12px;
+  padding: 1vh 1.5vw;
   text-align: center;
   font-size: 0.95rem;
   text-wrap: wrap;
@@ -96,7 +96,7 @@ tbody tr:hover {
   }
 
   td, th {
-    padding: 4px 6px;
+    padding: 0.5vh 0.75vw;
   }
 
   h2 {
