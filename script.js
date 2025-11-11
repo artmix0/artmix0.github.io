@@ -12,10 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const doc = parser.parseFromString(htmlString, "text/html");
       const table = doc.querySelector("div > table");
 
-      const rows = table.querySelectorAll(":scope > tbody > tr");
-      if (rows[1]) rows[1].remove();
-      if (rows[2]) rows[2].remove();
-
       const containerHTML = `<h2>${name}</h2>` + table.outerHTML;
 
       plany[name] = containerHTML;
