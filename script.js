@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
           option.textContent = name;
           document.querySelector("#classSelect").appendChild(option);
         }
-        if(/\(.+\)$/.test(name)){
+        else if(/\(.+\)$/.test(name)){
           const option = document.createElement("option");
           option.value = name;
           option.textContent = name;
