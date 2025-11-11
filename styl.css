@@ -124,15 +124,6 @@ tbody tr:hover {
     font-size: 0.9em;
     white-space: normal;    
     overflow-wrap: anywhere;    
-    word-break: break-word;
-  }
-
-  td, th * {
-    word-break: break-all;
-  }
-
-  table {
-    box-shadow: none;
   }
 
   #plans {
