@@ -58,9 +58,9 @@ jobs:
 
               await page.goto(link.href, { waitUntil: 'networkidle0' });
 
-              await page.waitForSelector('body');
+              await page.waitForSelector('table');
 
-              allPlans[text_link] = await page.evaluate(() => document.body.innerHTML);
+              allPlans[text_link] = await page.evaluate(() => document.querySelector('table > table').outerHTML);
             }
 
             fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
