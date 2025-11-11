@@ -80,8 +80,11 @@ td, th {
   padding: 0.5rem 1rem;
   text-align: center;
   font-size: 0.95rem;
-  white-space: normal;
-  overflow-wrap: break-word;
+  white-space: pre-line;
+}
+
+tr > td:nth-of-type(2){
+  white-space: nowrap;
 }
 
 th {
