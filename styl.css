@@ -129,36 +129,15 @@ tbody tr:hover {
     width: 100%;
   }
 
-  #plans table {
+  table {
     width: 100%;
     box-shadow: none;
     border-collapse: collapse;
+    table-layout: fixed;
   }
 
-  #plans table table {
-    width: 100%;
-    box-shadow: none;
-    border-collapse: collapse;
-  }
-
-  #plans td, 
-  #plans th {
-    padding: 4px 3px;
-    font-size: 0.7rem;
-  }
-
-  #plans tr > td:first-child,
-  #plans tr > th:first-child {
-    width: 5%;
-  }
-
-  #plans tr > td:nth-child(2),
-  #plans tr > th:nth-child(2) {
-    width: 10%;
-  }
-
-  #plans tr > td:nth-child(n+3),
-  #plans tr > th:nth-child(n+3) {
-    width: calc((100% - 15%) / 5);
+  td, th {
+    padding: 4px 6px;
+    font-size: 0.75rem;
   }
 }
