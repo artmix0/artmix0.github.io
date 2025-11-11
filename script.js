@@ -57,12 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
         "Nie udało się wczytać scraped.json";
     });
   
-  document.getElementById("select").addEventListener("change", (event) => {
-    const selectedValue = event.target.value;
-    const plansContainer = document.getElementById("plans");
+  document.querySelectorAll("select").forEach(select => {
+    select.addEventListener("change", (event) => {
+        const selectedValue = event.target.value;
+        const plansContainer = document.getElementById("plans");
 
-    plansContainer.innerHTML = plany[selectedValue] || "Brak planu dla wybranego elementu.";
+        plansContainer.innerHTML = plany[selectedValue] || "Brak planu dla wybranego elementu.";
 
-    event.target.selectedIndex = 0;
+        event.target.selectedIndex = 0;
+    });
 });
 });
