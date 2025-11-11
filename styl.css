@@ -112,26 +112,34 @@ tbody tr:hover {
     font-size: 0.95rem;
     margin: 10px 0 8px 0;
   }
+
   nav {
     gap: 6px;
     padding: 0 2px;
   }
+
   nav select {
     min-width: 100%;
     font-size: 0.85rem;
     padding: 4px 6px;
   }
-  table {
-    box-shadow: none;
-  }
-  td, th {
-    padding: 2px 3px;
-    font-size: 0.25em;
-    white-space: pre-line;
-  }
+
   #plans {
     padding: 0;
     width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    box-shadow: none;
+    border-collapse: collapse;
+  }
+
+  td, th {
+    padding: 4px 6px;  
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
 }
 
