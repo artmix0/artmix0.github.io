@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector("#roomSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
 
       for (const name in plany) {
-        if(/$[0-9][A-Z]$/.test(name)){
+        if(/[0-9][A-Z]$/.test(name)){
           const option = document.createElement("option");
           option.value = name;
           option.textContent = name;
