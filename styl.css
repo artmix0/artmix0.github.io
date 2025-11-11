@@ -132,3 +132,11 @@ tbody tr:hover {
     max-width: 100%;
   }
 }
+
+#plans a {
+  pointer-events: none;
+  cursor: default;
+  color: inherit;
+  text-decoration: none;
+}
+
