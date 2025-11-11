@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         plany[name] = container;
       }
+      
+      console.log(plany);
 
       document.querySelector("#classSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
       document.querySelector("#teacherSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
