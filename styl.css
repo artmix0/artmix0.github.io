@@ -93,6 +93,13 @@ tbody tr:hover {
   background: #f0f8ff;
 }
 
+#plans a {
+  pointer-events: none;
+  cursor: default;
+  color: inherit;
+  text-decoration: none;
+}
+
 @media (max-width: 768px) {
   body {
     padding: 10px;
@@ -129,12 +136,5 @@ tbody tr:hover {
     width: 100%;
     max-width: 100%;
   }
-}
-
-#plans a {
-  pointer-events: none;
-  cursor: default;
-  color: inherit;
-  text-decoration: none;
 }
 
