@@ -47,11 +47,10 @@ nav select:focus {
 
 table {
   border-collapse: collapse;
-  width: 90%;
+  width: 100%;
   margin: 10px auto 40px auto;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s;
 }
 
 td, th {
@@ -82,15 +81,14 @@ tbody tr:hover {
   }
 
   table {
-    width: 100%;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
   td, th {
-    padding: 6px 8px;
+    padding: 4px 6px;
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 }
