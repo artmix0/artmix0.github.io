@@ -95,30 +95,6 @@ tbody tr:hover {
 }
 
 @media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  nav select {
-    min-width: 80%;
-    margin-bottom: 10px;
-  }
-
-  table {
-    font-size: 0.85rem;
-  }
-
-  td, th {
-    padding: 6px 8px;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 480px) {
   body {
     padding: 10px;
   }
