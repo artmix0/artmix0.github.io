@@ -4,6 +4,8 @@ body {
   margin: 0;
   padding: 20px;
   color: #333;
+  width: 100vw;
+  height: 100vh;
 }
 
 h2 {
