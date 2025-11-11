@@ -41,6 +41,10 @@ nav select:focus {
   border-color: #007BFF;
 }
 
+#plans {
+  width: 100vw;
+}
+
 #plans h2 {
   font-size: 1.4rem;
   margin-top: 30px;
