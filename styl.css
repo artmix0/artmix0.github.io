@@ -122,11 +122,11 @@ tbody tr:hover {
     padding: 4px 6px;
   }
   table {
-    font-size: 0.65em;
     box-shadow: none;
   }
   td, th {
     padding: 2px 3px;
+    font-size: 0.25em;
     white-space: pre-line;
   }
   #plans {
