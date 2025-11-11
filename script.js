@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (const [name, htmlString] of Object.entries(data)) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlString, "text/html");
-      const table = doc.querySelector("div > table");
+      const table = doc.querySelector("table");
 
       const containerHTML = `<h2>${name}</h2>` + table.outerHTML;
 
