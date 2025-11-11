@@ -137,5 +137,6 @@ tbody tr:hover {
 
   td, th {
     font-size: 5%;
+    padding: 2px 3px;
   }
 }
