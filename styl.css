@@ -117,3 +117,51 @@ tbody tr:hover {
     font-size: 1.3rem;
   }
 }
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    margin: 18px 0 12px 0;
+  }
+
+  nav {
+    gap: 10px;
+    padding: 0 4px;
+  }
+
+  nav select {
+    min-width: 100%;
+    font-size: 0.95rem;
+    padding: 6px 8px;
+  }
+
+  table {
+    font-size: clamp(0.65rem, 2.4vw, 0.85rem);
+  }
+
+  td, th {
+    padding: 4px 6px;
+    font-size: 0.9em;
+    white-space: normal;    
+    overflow-wrap: anywhere;    
+    word-break: break-word;
+  }
+
+  td, th * {
+    word-break: break-all;
+  }
+
+  table {
+    box-shadow: none;
+  }
+
+  #plans {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
