@@ -122,9 +122,6 @@ tbody tr:hover {
     padding: 4px 6px;
   }
   table {
-    font-size: 0.65rem;
-    width: 98vw;
-    max-width: 98vw;
     box-shadow: none;
   }
   td, th {
@@ -133,8 +130,7 @@ tbody tr:hover {
   }
   #plans {
     padding: 0;
-    width: 100vw;
-    max-width: 100vw;
+    width: 100%;
   }
 }
 
