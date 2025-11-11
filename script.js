@@ -8,24 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const parser = new DOMParser();
 
       for (const [name, htmlString] of Object.entries(data)) {
-        let container = "";
-        
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlString, "text/html");
+      const table = doc.querySelector("div > table");
 
-        const doc = parser.parseFromString(htmlString, "text/html");
-        const table = doc.querySelector("div > table");
+      const rows = table.querySelectorAll(":scope > tbody > tr");
+      if (rows[1]) rows[1].remove();
+      if (rows[2]) rows[2].remove();
 
-        const rows = table.querySelectorAll(":scope > tbody > tr");
+      const containerHTML = `<h2>${name}</h2>` + table.outerHTML;
 
-        if (rows[1]) rows[1].remove();
-        if (rows[2]) rows[2].remove();
-
-        const title = document.createElement("h2");
-        title.textContent = name;
-
-        container =+ title;
-        container =+ table;
-
-        plany[name] = container;
+      plany[name] = containerHTML;
       }
       
       console.log(plany);
