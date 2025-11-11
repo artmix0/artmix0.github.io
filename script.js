@@ -34,23 +34,23 @@ fetch("scraped.json")
 document.querySelector("#classSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
 document.querySelector("#teacherSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
 document.querySelector("#roomSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
-for (const className in plany) {
-  if(/[0-9][A-Z]/.test(className)){
+for (const name in plany) {
+  if(/[0-9][A-Z]/.test(name)){
     const option = document.createElement("option");
-    option.value = className;
-    option.textContent = className;
+    option.value = name;
+    option.textContent = name;
     document.querySelector("#classSelect").appendChild(option);
   }
-  if(/%(%)/.test(className)){
+  if(/%\(.*\)$/.test(name)){
     const option = document.createElement("option");
-    option.value = className;
-    option.textContent = className;
+    option.value = name;
+    option.textContent = name;
     document.querySelector("#teacherSelect").appendChild(option);
   }
   else{
     const option = document.createElement("option");
-  option.value = className;
-  option.textContent = className;
-  document.querySelector("#roomSelect").appendChild(option);
+    option.value = name;
+    option.textContent = name;
+    document.querySelector("#roomSelect").appendChild(option);
   }
 }
