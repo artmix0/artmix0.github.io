@@ -46,7 +46,7 @@ nav select:focus {
 }
 
 #plans {
-  width: 100vw;
+  width: 100%;
 }
 
 #plans h2 {
@@ -68,6 +68,8 @@ td, th {
   padding: 8px 12px;
   text-align: center;
   font-size: 0.95rem;
+  text-wrap: wrap;
+  
 }
 
 th {
