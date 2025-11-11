@@ -37,22 +37,26 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#roomSelect").innerHTML = `<option value="" disabled selected>-- Wybierz --</option>`;
   for (const name in plany) {
     if(/[0-9][A-Z]/.test(name)){
+      console.log("1");
       const option = document.createElement("option");
       option.value = name;
       option.textContent = name;
       document.querySelector("#classSelect").appendChild(option);
     }
     if(/%\(.+\)$/.test(name)){
+      console.log("2");
       const option = document.createElement("option");
       option.value = name;
       option.textContent = name;
       document.querySelector("#teacherSelect").appendChild(option);
     }
     else{
+      console.log("3");
       const option = document.createElement("option");
       option.value = name;
       option.textContent = name;
       document.querySelector("#roomSelect").appendChild(option);
     }
+    console.log("4");
   }
 });
