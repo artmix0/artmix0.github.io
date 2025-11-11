@@ -41,7 +41,7 @@ for (const name in plany) {
     option.textContent = name;
     document.querySelector("#classSelect").appendChild(option);
   }
-  if(/%\(.*\)$/.test(name)){
+  if(/%\(.+\)$/.test(name)){
     const option = document.createElement("option");
     option.value = name;
     option.textContent = name;
