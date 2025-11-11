@@ -81,6 +81,7 @@ td, th {
   text-align: center;
   font-size: 0.95rem;
   white-space: normal;
+  overflow-wrap: break-word;
 }
 
 th {
@@ -127,7 +128,6 @@ tbody tr:hover {
   td, th {
     padding: 4px 6px;
     font-size: 0.9em;
-    white-space: normal;      
   }
 
   #plans {
