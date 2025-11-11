@@ -58,7 +58,6 @@ nav select:focus {
 table {
   border-collapse: collapse;
   width: 100%;
-  margin: 10px auto 40px auto;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
@@ -69,7 +68,7 @@ td, th {
   text-align: center;
   font-size: 0.95rem;
   text-wrap: wrap;
-  
+
 }
 
 th {
