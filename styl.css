@@ -122,6 +122,7 @@ tbody tr:hover {
     padding: 4px 6px;
   }
   table {
+    font-size: 0.65em;
     box-shadow: none;
   }
   td, th {
