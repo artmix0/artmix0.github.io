@@ -60,7 +60,7 @@ jobs:
 
               await page.waitForSelector('table');
 
-              allPlans[text_link] = await page.evaluate(() => document.querySelector('table > table').outerHTML);
+              allPlans[text_link] = await page.evaluate(() => document.querySelector('table table').outerHTML);
             }
 
             fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
