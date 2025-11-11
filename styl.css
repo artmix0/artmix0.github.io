@@ -133,11 +133,10 @@ tbody tr:hover {
     width: 100%;
     box-shadow: none;
     border-collapse: collapse;
-    table-layout: fixed;
   }
 
   td, th {
     padding: 4px 6px;
-    font-size: 0.75rem;
+    font-size: 10%;
   }
 }
