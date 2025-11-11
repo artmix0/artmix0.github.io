@@ -5,11 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
 
-      let container = "";
-
       const parser = new DOMParser();
 
       for (const [name, htmlString] of Object.entries(data)) {
+        let container = document.createElement("div");
+        
+
         const doc = parser.parseFromString(htmlString, "text/html");
         const table = doc.querySelector("div > table");
 
@@ -20,8 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const title = document.createElement("h2");
         title.textContent = name;
-        container =+ title;
-        container =+ table;
+        
+        container.appendChild(title);
+        container.appendChild(table);
 
         plany[name] = container;
       }
