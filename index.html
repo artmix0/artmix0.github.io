@@ -2,29 +2,30 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Dane ze scrapera</title>
+  <title>Plan lekcji ZSK</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e3a5f">
   <link rel="stylesheet" href="styl.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <h2>Plan lekcji ZSK</h2>
+  <header>
+    <h1>Plan lekcji ZSK</h1>
+    <p>Zespół Szkół Komunikacji im. Hipolita Cegielskiego</p>
+  </header>
   <nav>
-    Wybierz klasę:
-    <select id="classSelect">
-
-    </select>
-    Wybierz nauczyciela:
-    <select id="teacherSelect">
-
-    </select>
-    Wybierz salę:
-    <select id="roomSelect">
-    
-    </select>
+    <label for="classSelect">Klasa
+      <select id="classSelect"></select>
+    </label>
+    <label for="teacherSelect">Nauczyciel
+      <select id="teacherSelect"></select>
+    </label>
+    <label for="roomSelect">Sala
+      <select id="roomSelect"></select>
+    </label>
   </nav>
-  <div id="plans">
-
-  </div>
+  <main id="plans">
+    <p class="placeholder">Wybierz klasę, nauczyciela lub salę, aby zobaczyć plan.</p>
+  </main>
 </body>
 </html>

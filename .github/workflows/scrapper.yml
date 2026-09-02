@@ -2,8 +2,8 @@ name: Scrapuj stronę
 
 on:
   schedule:
-    - cron: "0 5 * * *"  # codziennie o 6:00 rano
-  workflow_dispatch:      # możliwość ręcznego uruchomienia
+    - cron: "0 5 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,57 +20,8 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Zainstaluj Puppeteer oraz fs
-        run: npm install puppeteer fs
-
       - name: Scrapuj stronę
-        run: |
-          node <<'EOF'
-          import puppeteer from "puppeteer";
-          import fs from "fs";
-      
-          const url = "https://www.zsk.poznan.pl/plany_lekcji/2026";
-      
-          const run = async () => {
-            const browser = await puppeteer.launch({
-              args: ['--no-sandbox', '--disable-setuid-sandbox']
-            });
-            const page = await browser.newPage();
-            await page.goto(url, { waitUntil: 'networkidle0' });
-
-            const listFrame = page.frames().find(f => f.name() === 'list');
-            const links = await listFrame.evaluate(() => {
-              return Array.from(document.querySelectorAll(".el > a")) // 
-                .map(a => ({ text: a.textContent.trim(), href: a.href }));
-            });
-
-            const allPlans = {};
-
-            for (const link of links) {
-              let text_link = "";
-              if (/^[0-9][A-Za-z]/.test(link.text)) {
-                text_link = link.text.substring(0, 2);
-              } else {
-                text_link = link.text;
-              }
-
-              console.log("Przetwarzam:", text_link);
-
-              await page.goto(link.href, { waitUntil: 'networkidle0' });
-
-              await page.waitForSelector('table');
-
-              allPlans[text_link] = await page.evaluate(() => document.querySelector('table table').outerHTML);
-            }
-
-            fs.writeFileSync("scraped.json", JSON.stringify(allPlans, null, 2));
-            console.log("Zapisano wszystkie plany w scraped.json");
-
-            await browser.close();
-          };
-      
-          run();
-          EOF
+        run: node scrape.mjs
 
       - name: Commit i push zmian
         run: |
