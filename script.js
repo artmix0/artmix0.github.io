@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const STORAGE_KEY = "zsk-plan-selection";
   const DAY_SHORT = ["Pn", "Wt", "Śr", "Cz", "Pt", "So", "Nd"];
   const plany = {};
+  const teacherByCode = {};
   const selects = {
     class: document.querySelector("#classSelect"),
     teacher: document.querySelector("#teacherSelect"),
@@ -48,12 +49,37 @@ document.addEventListener("DOMContentLoaded", () => {
     return normalized;
   };
 
+  const teacherCodeFromName = (name) => {
+    const match = String(name).match(/\(([^)]+)\)\s*$/);
+    return match ? match[1].trim() : "";
+  };
+
+  const teacherDisplayName = (name) => String(name).replace(/\s*\([^)]+\)\s*$/, "").trim() || name;
+
+  const resolveTeacherName = (codeOrName) => {
+    if (!codeOrName) return "";
+    if (plany[codeOrName]?.type === "teacher") return teacherDisplayName(codeOrName);
+    const byCode = teacherByCode[codeOrName];
+    if (byCode) return teacherDisplayName(byCode);
+    return codeOrName;
+  };
+
+  const resolveTeacherKey = (codeOrName) => {
+    if (!codeOrName) return null;
+    if (plany[codeOrName]?.type === "teacher") return codeOrName;
+    return teacherByCode[codeOrName] || null;
+  };
+
   const registerGroup = (group, type) => {
     for (const [name, entry] of Object.entries(group || {})) {
       const html = typeof entry === "string" ? entry : entry.html;
       const title = typeof entry === "string" ? name : entry.title || name;
       const validFrom = typeof entry === "string" ? null : entry.validFrom;
       plany[name] = { type, html, title, validFrom };
+      if (type === "teacher") {
+        const code = teacherCodeFromName(name);
+        if (code) teacherByCode[code] = name;
+      }
     }
   };
 
@@ -83,12 +109,18 @@ document.addEventListener("DOMContentLoaded", () => {
               .filter(Boolean);
             const teacher = wrap.querySelector(".n")?.textContent.trim() || "";
             const room = wrap.querySelector(".s")?.textContent.trim() || "";
+            const klass = [...wrap.querySelectorAll(".o")]
+              .map((el) => el.textContent.trim())
+              .filter(Boolean)
+              .join(", ");
             const text = wrap.textContent.replace(/\s+/g, " ").trim();
             if (!text) return null;
             return {
               subject: subjects.join(" ") || text,
               teacher,
+              teacherFull: resolveTeacherName(teacher),
               room,
+              klass,
               text,
             };
           })
@@ -106,7 +138,38 @@ document.addEventListener("DOMContentLoaded", () => {
     return mondayBased < dayCount ? mondayBased : 0;
   };
 
-  const renderMobileDays = (parsed) => {
+  const chip = (kind, label, target) => {
+    if (!label) return "";
+    const safeLabel = label.replace(/</g, "&lt;");
+    if (!target || !plany[target]) {
+      return `<span class="chip chip-${kind}">${safeLabel}</span>`;
+    }
+    return `<button type="button" class="chip chip-${kind} chip-link" data-target="${target}">${safeLabel}</button>`;
+  };
+
+  const lessonMetaHtml = (item, planType) => {
+    const parts = [];
+    if (planType === "teacher" || planType === "room") {
+      item.klass
+        .split(",")
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .forEach((klass) => {
+          parts.push(chip("o", klass, plany[klass] ? klass : null));
+        });
+    }
+    if (planType === "class" || planType === "room") {
+      const teacherKey = resolveTeacherKey(item.teacher);
+      const teacherLabel = item.teacherFull || item.teacher;
+      if (teacherLabel) parts.push(chip("n", teacherLabel, teacherKey));
+    }
+    if (planType === "class" || planType === "teacher") {
+      if (item.room) parts.push(chip("s", item.room, plany[item.room] ? item.room : null));
+    }
+    return parts.length ? `<p class="lesson-meta">${parts.join(" ")}</p>` : "";
+  };
+
+  const renderMobileDays = (parsed, planType) => {
     const tabs = parsed.dayHeaders
       .map((day, index) => {
         const short = DAY_SHORT[index] || day.slice(0, 2);
@@ -122,10 +185,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!items.length) return "";
             const cards = items
               .map((item) => {
-                const meta = [item.teacher, item.room].filter(Boolean).join(" · ");
                 return `<div class="lesson-item">
                   <p class="lesson-subject">${item.subject}</p>
-                  ${meta ? `<p class="lesson-meta">${meta}</p>` : ""}
+                  ${lessonMetaHtml(item, planType)}
                 </div>`;
               })
               .join("");
@@ -161,6 +223,58 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const enhanceTableLinks = (root) => {
+    root.querySelectorAll("a.n, a.o, a.s").forEach((anchor) => {
+      const text = anchor.textContent.trim();
+      let target = null;
+      if (anchor.classList.contains("n")) {
+        target = resolveTeacherKey(text);
+        const full = resolveTeacherName(text);
+        if (full && full !== text) {
+          anchor.setAttribute("title", full);
+          anchor.setAttribute("aria-label", full);
+          anchor.dataset.fullName = full;
+        }
+      } else if (anchor.classList.contains("o")) {
+        target = plany[text] ? text : null;
+      } else if (anchor.classList.contains("s")) {
+        target = plany[text] ? text : null;
+      }
+
+      if (!target) return;
+      anchor.classList.add("plan-link");
+      anchor.dataset.target = target;
+      anchor.setAttribute("role", "button");
+      anchor.setAttribute("tabindex", "0");
+      anchor.addEventListener("click", (event) => {
+        event.preventDefault();
+        selectAndRender(target);
+      });
+      anchor.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectAndRender(target);
+        }
+      });
+    });
+  };
+
+  const selectAndRender = (name) => {
+    if (!name || !plany[name]) return;
+    const type = plany[name].type;
+    Object.values(selects).forEach((select) => {
+      select.selectedIndex = 0;
+    });
+    const select = selects[type];
+    if (select) select.value = name;
+    try {
+      localStorage.setItem(STORAGE_KEY, name);
+    } catch {
+      /* ignore */
+    }
+    renderPlan(name);
+  };
+
   const renderPlan = (name) => {
     const plan = plany[name];
     if (!plan || !plan.html) {
@@ -169,20 +283,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const parsed = parseLessons(plan.html);
+    const heading =
+      plan.type === "teacher" ? teacherDisplayName(plan.title || name) : plan.title || name;
+    const teacherCode = plan.type === "teacher" ? teacherCodeFromName(name) : "";
+    const subtitle =
+      plan.type === "teacher" && teacherCode
+        ? `<p class="plan-subtitle">Kod: ${teacherCode}</p>`
+        : "";
     const validFrom = plan.validFrom
       ? `<p class="plan-meta">Obowiązuje od: ${plan.validFrom}</p>`
       : "";
 
     if (!parsed) {
-      plansContainer.innerHTML = `<h2>${plan.title}</h2>${validFrom}${plan.html}`;
+      plansContainer.innerHTML = `<h2>${heading}</h2>${subtitle}${validFrom}${plan.html}`;
+      enhanceTableLinks(plansContainer);
       return;
     }
 
     plansContainer.innerHTML = `
       <article class="plan">
-        <h2>${plan.title}</h2>
+        <h2>${heading}</h2>
+        ${subtitle}
         ${validFrom}
-        ${renderMobileDays(parsed)}
+        ${renderMobileDays(parsed, plan.type)}
         <div class="table-scroll">${parsed.tableHTML}</div>
       </article>
     `;
@@ -192,6 +315,10 @@ document.addEventListener("DOMContentLoaded", () => {
     plansContainer.querySelectorAll(".day-tab").forEach((tab) => {
       tab.addEventListener("click", () => activateDay(plansContainer, Number(tab.dataset.day)));
     });
+    plansContainer.querySelectorAll(".chip-link").forEach((btn) => {
+      btn.addEventListener("click", () => selectAndRender(btn.dataset.target));
+    });
+    enhanceTableLinks(plansContainer);
   };
 
   fetch("scraped.json")

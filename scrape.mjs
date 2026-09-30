@@ -4,7 +4,7 @@ const PLAN_ROOT = "https://zsk.poznan.pl/plany_lekcji/";
 const CONCURRENCY = 8;
 const RETRIES = 3;
 
-/** Prefer newest Optivum folders; school often renames e.g. 2026 → 2026_09. */
+/** Prefer newest Optivum folders; school often renames e.g. 2026 → 2026_09 → 2026_09_2. */
 const CANDIDATE_FOLDERS = (() => {
     const now = new Date();
     const year = now.getFullYear();
@@ -13,7 +13,11 @@ const CANDIDATE_FOLDERS = (() => {
     for (let y = year; y >= year - 1; y -= 1) {
         for (let m = 12; m >= 1; m -= 1) {
             if (y === year && m > month) continue;
-            folders.push(`${y}_${String(m).padStart(2, "0")}`);
+            const ym = `${y}_${String(m).padStart(2, "0")}`;
+            for (let rev = 5; rev >= 2; rev -= 1) {
+                folders.push(`${ym}_${rev}`);
+            }
+            folders.push(ym);
         }
         folders.push(String(y));
     }
@@ -177,8 +181,8 @@ const scrapeGroup = async (items, label, baseUrl) => {
 };
 
 const run = async () => {
-    console.log(`Pobieram listę: ${BASE_URL}lista.html`);
-    const listHtml = await fetchText(`${BASE_URL}lista.html`);
+    const { baseUrl, listHtml } = await resolveBaseUrl();
+    console.log(`Pobieram listę: ${baseUrl}lista.html`);
     const { classes, teachers, rooms } = extractList(listHtml);
 
     console.log(
